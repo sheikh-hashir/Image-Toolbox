@@ -134,7 +134,7 @@ def adaptive_threshold(
     adaptive_type: str,
 ):
     """
-    Applies adaptive thresholding to the given image to convert it to a binary image. 
+    Applies adaptive thresholding to the given image to convert it to a binary image.
     This technique adjusts the threshold value on a per-pixel basis based on the local neighborhood of each pixel.
 
     Args:
@@ -262,7 +262,7 @@ def construct_histogram(image, bins: int = 100, is_ravel: bool = True) -> None:
     """
     Generate and display a histogram for the provided image data. This function visualizes the distribution of pixel intensities.
 
-    The histogram can be customized by specifying the number of bins and whether to flatten the image array before plotting. 
+    The histogram can be customized by specifying the number of bins and whether to flatten the image array before plotting.
     It is useful for analyzing the tonal range and contrast of the image.
 
     Args:
@@ -280,7 +280,7 @@ def construct_histogram(image, bins: int = 100, is_ravel: bool = True) -> None:
 
 def equalize_histogram(image: np.array) -> np.array:
     """
-    Enhances the contrast of the given image by applying histogram equalization. 
+    Enhances the contrast of the given image by applying histogram equalization.
     This technique redistributes the intensity values of the image to improve its overall contrast.
 
     Args:
@@ -294,10 +294,10 @@ def equalize_histogram(image: np.array) -> np.array:
 
 def segmentation(image, threshold: float, reverse: bool = False):
     """
-    Perform binary segmentation on the input image based on a specified threshold. 
+    Perform binary segmentation on the input image based on a specified threshold.
     This function creates a new image where pixels above the threshold are set to white, and those below are set to black.
 
-    The segmentation process helps in isolating objects or regions of interest in the image by converting it into a binary format. 
+    The segmentation process helps in isolating objects or regions of interest in the image by converting it into a binary format.
     The resulting image can be used for further analysis or processing.
 
     Args:
@@ -331,7 +331,7 @@ def crop_image(
     columns: int,
 ):
     """
-   Crops a specified region from the input image based on the provided fractional parameters. 
+   Crops a specified region from the input image based on the provided fractional parameters.
    The function calculates the starting position and dimensions of the crop relative to the image size.
 
    Args:
@@ -438,10 +438,10 @@ def convolution(image, window: list, _type: str = None):
     """
     if not window or len(window) % 2 == 0 or len(window[0]) % 2 == 0:
         raise ValueError("Kernel size must be an odd number.")
-    
+
     # Convert image to float for calculations
     image = image.astype(np.float32)
-    
+
     # Handle color or grayscale images
     if len(image.shape) == 3:  # Color image
         channels = image.shape[2]
@@ -454,10 +454,10 @@ def convolution(image, window: list, _type: str = None):
         rows, columns = image.shape
         window_size = len(window)
         offset = window_size // 2  # Offset for the window center
-        
+
         # Pad the image
         padded_image = np.pad(image, offset, mode="edge")
-        
+
         smoothed_image = np.zeros((rows, columns), dtype=np.float32)
         for r in range(1, rows + 1):
             for c in range(1, columns + 1):
@@ -467,12 +467,12 @@ def convolution(image, window: list, _type: str = None):
                         smoothed_value += (
                             padded_image[r - offset + i, c - offset + j] * window[i][j]
                         )
-                
-                if _type in ["PREWIT", "LAPLACIAN"]:
+
+                if _type in ["PREWIT", "LAPLACIAN", "SOBEL"]:
                     smoothed_image[r - 1, c - 1] = smoothed_value
                 else:
                     smoothed_image[r - 1, c - 1] = smoothed_value / (window_size ** 2)
-        
+
         return smoothed_image
     else:
         raise ValueError("Unsupported image format. Must be grayscale or color.")
@@ -496,7 +496,7 @@ def convolution(image, window: list, _type: str = None):
 
     Raises:
         ValueError: If the window is empty or has even dimensions.
-    
+
     image = image.astype(np.float32)
 
     if not window or len(window) % 2 == 0 or len(window[0]) % 2 == 0:
